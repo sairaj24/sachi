@@ -1,43 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Sachu! 🎉</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+document.addEventListener('DOMContentLoaded', () => {
+    const song = document.getElementById('birthday-song');
+    const button = document.getElementById('reveal-button');
+    const messageArea = document.getElementById('message-area');
+    const animationArea = document.getElementById('animation-area');
+    const photoFrame = document.querySelector('.photo-frame');
+    const mainMessage = document.getElementById('the-main-message');
+    
+    // --- Balloon and Star Generator ---
+    const NUM_BALLOONS = 12; // Fewer, bigger balloons
+    const NUM_STARS = 30; // Many small, falling stars
 
-    <div id="content-container">
-        
-        <div class="photo-frame">
-            <img id="main-photo" src="sachu_birthday_pic.jpg" alt="A cute picture of Sachu">
-        </div>
+    // Generate Balloons (float up)
+    for (let i = 0; i < NUM_BALLOONS; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.left = `${Math.random() * 95}%`; 
+        balloon.style.animationDelay = `${Math.random() * 8}s`;
+        balloon.style.animationDuration = `${18 + Math.random() * 10}s`;
+        animationArea.appendChild(balloon);
+    }
 
-        <h1>Happy Birthday, Sachu✨</h1>
-        
-        <div class="message-section" id="message-area">
+    // Generate Stars (fall down)
+    for (let i = 0; i < NUM_STARS; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 95}%`; 
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.animationDuration = `${6 + Math.random() * 4}s`; // Faster fall
+        animationArea.appendChild(star);
+    }
+
+    // --- Confetti Generator Function ---
+    function launchConfetti() {
+        const NUM_CONFETTI = 50;
+        for (let i = 0; i < NUM_CONFETTI; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
             
-            <p class="sweet-message" id="the-main-message" style="display:none;">
-                **Happy Birthday, Sachu ✨**
-                <br><br>
-                I don’t often say this, but I truly appreciate having you as a part of my life.
-                <br><br>
-                Thank you for being the kind of person who quietly brings **warmth, comfort, and a little extra light** just by being yourself.
-                <br><br>
-                You deserve all the softness, happiness, and good things this year has to offer — even the ones you don’t ask for.
-                <br><br>
-                Stay the same real, kind, and beautifully genuine you. 🌼
-            </p>
-        </div>
+            piece.style.top = `${Math.random() * 20}%`;
+            piece.style.left = `${40 + Math.random() * 20}%`;
+            piece.style.setProperty('--x-offset', `${(Math.random() * 200 - 100)}px`); 
+            
+            animationArea.appendChild(piece);
+        }
+        setTimeout(() => {
+            document.querySelectorAll('.confetti-piece').forEach(p => p.remove());
+        }, 3000);
+    }
+    
+    // --- SINGLE CLICK LOGIC ---
+    button.addEventListener('click', () => {
+        button.disabled = true;
+
+        // 1. Play Music
+        song.play().catch(error => console.error("Audio playback blocked:", error));
+
+        // 2. Photo Entry Effect (Spin and Scale)
+        photoFrame.style.transition = 'transform 1s ease-out';
+        photoFrame.style.transform = 'scale(1.1) rotate(360deg)';
+        setTimeout(() => {
+            photoFrame.style.transform = 'scale(1) rotate(0deg)'; 
+        }, 1000);
+
+        // 3. Reveal Message and Launch Confetti
+        messageArea.classList.add('revealed');
+        mainMessage.style.display = 'block';
+        launchConfetti();
         
-        <button id="reveal-button">Tap to start the celebration!</button>
-    </div>
-
-    <audio id="birthday-song" src="happy_birthday_soft.mp3" loop></audio>
-
-    <div class="animation-overlay" id="animation-area"></div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+        // 4. Hide the button
+        button.style.display = 'none'; 
+    });
+});
