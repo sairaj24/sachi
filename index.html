@@ -15,22 +15,28 @@
         </div>
 
         <h1>Happy Birthday, Sachu✨</h1>
-        <p class="sweet-message">
-            I don’t often say this, but I truly appreciate having you as a part of my life.
-            <br><br>
-            Thank you for being the kind of person who quietly brings warmth, comfort, and a little extra light just by being yourself.
-            <br><br>
-            You deserve all the softness, happiness, and good things this year has to offer — even the ones you don’t ask for.
-            <br><br>
-            Stay the same real, kind, and beautifully genuine you. 💖
-        </p>
-
-        <button id="play-button">Tap to start the celebration!</button>
+        
+        <div class="message-section" id="message-area">
+            
+            <p class="sweet-message" id="the-main-message" style="display:none;">
+                **Happy Birthday, Sachu ✨**
+                <br><br>
+                I don’t often say this, but I truly appreciate having you as a part of my life.
+                <br><br>
+                Thank you for being the kind of person who quietly brings **warmth, comfort, and a little extra light** just by being yourself.
+                <br><br>
+                You deserve all the softness, happiness, and good things this year has to offer — even the ones you don’t ask for.
+                <br><br>
+                Stay the same real, kind, and beautifully genuine you. 🌼
+            </p>
+        </div>
+        
+        <button id="reveal-button">Tap to start the celebration!</button>
     </div>
 
     <audio id="birthday-song" src="happy_birthday_soft.mp3" loop></audio>
 
-    <div class="animation-overlay"></div>
+    <div class="animation-overlay" id="animation-area"></div>
 
     <script src="script.js"></script>
 </body>
