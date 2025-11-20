@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const messages = document.querySelectorAll('.sweet-message');
     let step = 0;
 
-    // --- Balloon Generator (Fixed & Randomized) ---
-    const NUM_BALLOONS = 12; // Increased count for better visual effect
+    // --- Balloon Generator (The reliable way) ---
+    const NUM_BALLOONS = 12; 
     for (let i = 0; i < NUM_BALLOONS; i++) {
         const balloon = document.createElement('div');
         balloon.className = 'balloon';
         
-        // Apply random starting position (left) and animation timing (delay/duration)
-        balloon.style.left = `${Math.random() * 90}%`; // Random horizontal position
-        balloon.style.animationDelay = `${Math.random() * 10}s`; // Stagger the start time
+        // Apply random styling directly in JS for scattered look
+        balloon.style.left = `${Math.random() * 95}%`; // Random horizontal position 0-95%
+        balloon.style.animationDelay = `${Math.random() * 10}s`; // Stagger the start time (0-10s)
         balloon.style.animationDuration = `${12 + Math.random() * 8}s`; // Random speed (12s to 20s)
         
         animationArea.appendChild(balloon);
