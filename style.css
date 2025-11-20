@@ -9,13 +9,13 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--secondary-color);
-    font-family: 'Georgia', serif; /* A softer, more classic font */
+    font-family: 'Georgia', serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     text-align: center;
-    overflow: hidden; /* Important for clean edges */
+    overflow: hidden;
 }
 
 #content-container {
@@ -23,7 +23,7 @@ body {
     max-width: 90%;
     color: var(--text-color);
     position: relative;
-    z-index: 10; /* Keep content above the animation */
+    z-index: 10;
 }
 
 /* Photo Styling */
@@ -35,6 +35,7 @@ body {
     height: 250px;
     margin: 0 auto 25px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out; /* Add transition for future effects */
 }
 
 #main-photo {
@@ -46,19 +47,32 @@ body {
 h1 {
     font-size: 2.5em;
     margin-bottom: 15px;
-    color: #e91e63; /* Deeper pink for emphasis */
+    color: #e91e63;
+}
+
+/* The Message Section - Initially Hidden for the reveal button */
+.message-section {
+    opacity: 0; /* HIDDEN: Will be revealed by JS */
+    transition: opacity 1s ease-in, transform 1s ease-in;
+    transform: translateY(20px);
+}
+
+.message-section.revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .sweet-message {
     font-size: 1.1em;
     line-height: 1.6;
     margin-bottom: 30px;
-    background: rgba(255, 255, 255, 0.5); /* Slightly transparent white background */
-    padding: 10px;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#play-button {
+#reveal-button {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -68,11 +82,11 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    transition: background-color 0.3s;
 }
 
-#play-button:active {
-    transform: scale(0.98);
+#reveal-button:hover {
+    background-color: #e91e63;
 }
 
 /* --- Floating Balloon Animation --- */
@@ -83,24 +97,22 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Allows clicks to pass through to the button */
+    pointer-events: none;
+    overflow: hidden; /* Ensure balloons don't break the container */
 }
 
-/* Use the Balloon Emoji */
-.animation-overlay::before,
-.animation-overlay::after,
-.heart:nth-child(1), .heart:nth-child(2), .heart:nth-child(3), .heart:nth-child(4), .heart:nth-child(5),
-.heart:nth-child(6), .heart:nth-child(7), .heart:nth-child(8), .heart:nth-child(9), .heart:nth-child(10) {
-    content: '🎈'; /* THE BALLOON EMOJI IS HERE */
+/* Balloon Class Styling */
+.balloon {
+    content: '🎈'; /* The balloon emoji is now defined here */
     position: absolute;
-    font-size: 30px; /* Slightly larger for balloons */
-    opacity: 0;
-    animation: floating-balloon 15s linear infinite; /* Longer duration for slow float */
+    font-size: 30px;
+    opacity: 0; /* Start hidden */
+    animation: floating-balloon 15s linear infinite;
 }
 
 @keyframes floating-balloon {
     0% {
-        transform: translateY(100vh) translateX(0); /* Start from the bottom */
+        transform: translateY(100vh) translateX(0);
         opacity: 0;
     }
     10% {
@@ -110,19 +122,19 @@ h1 {
         opacity: 0.8;
     }
     100% {
-        transform: translateY(-20vh) translateX(50px); /* Float to the top */
+        transform: translateY(-20vh) translateX(50px);
         opacity: 0;
     }
 }
 
-/* Delay and position balloons for a scattered effect */
-.heart:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 15s; }
-.heart:nth-child(2) { left: 20%; animation-delay: 1.5s; animation-duration: 18s; }
-.heart:nth-child(3) { left: 30%; animation-delay: 3s; animation-duration: 16s; }
-.heart:nth-child(4) { left: 40%; animation-delay: 4.5s; animation-duration: 20s; }
-.heart:nth-child(5) { left: 50%; animation-delay: 6s; animation-duration: 14s; }
-.heart:nth-child(6) { left: 60%; animation-delay: 7.5s; animation-duration: 17s; }
-.heart:nth-child(7) { left: 70%; animation-delay: 9s; animation-duration: 19s; }
-.heart:nth-child(8) { left: 80%; animation-delay: 10.5s; animation-duration: 15s; }
-.heart:nth-child(9) { left: 90%; animation-delay: 12s; animation-duration: 22s; }
-.heart:nth-child(10) { left: 5%; animation-delay: 13.5s; animation-duration: 16s; }
+/* Delay and position balloons */
+.balloon:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 15s; }
+.balloon:nth-child(2) { left: 20%; animation-delay: 1.5s; animation-duration: 18s; }
+.balloon:nth-child(3) { left: 30%; animation-delay: 3s; animation-duration: 16s; }
+.balloon:nth-child(4) { left: 40%; animation-delay: 4.5s; animation-duration: 20s; }
+.balloon:nth-child(5) { left: 50%; animation-delay: 6s; animation-duration: 14s; }
+.balloon:nth-child(6) { left: 60%; animation-delay: 7.5s; animation-duration: 17s; }
+.balloon:nth-child(7) { left: 70%; animation-delay: 9s; animation-duration: 19s; }
+.balloon:nth-child(8) { left: 80%; animation-delay: 10.5s; animation-duration: 15s; }
+.balloon:nth-child(9) { left: 90%; animation-delay: 12s; animation-duration: 22s; }
+.balloon:nth-child(10) { left: 5%; animation-delay: 13.5s; animation-duration: 16s; }
