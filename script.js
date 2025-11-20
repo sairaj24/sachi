@@ -6,19 +6,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const photoFrame = document.querySelector('.photo-frame');
     const mainMessage = document.getElementById('the-main-message');
     
-    // --- Balloon Generator (Unchanged, remains active) ---
-    const NUM_BALLOONS = 20;
+    // --- Balloon and Star Generator ---
+    const NUM_BALLOONS = 12; // Fewer, bigger balloons
+    const NUM_STARS = 30; // Many small, falling stars
+
+    // Generate Balloons (float up)
     for (let i = 0; i < NUM_BALLOONS; i++) {
         const balloon = document.createElement('div');
         balloon.className = 'balloon';
-        
         balloon.style.left = `${Math.random() * 95}%`; 
-        balloon.style.animationDelay = `${Math.random() * 5}s`;
-        balloon.style.animationDuration = `${10 + Math.random() * 10}s`;
-        
+        balloon.style.animationDelay = `${Math.random() * 8}s`;
+        balloon.style.animationDuration = `${18 + Math.random() * 10}s`;
         animationArea.appendChild(balloon);
     }
-    
+
+    // Generate Stars (fall down)
+    for (let i = 0; i < NUM_STARS; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 95}%`; 
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.animationDuration = `${6 + Math.random() * 4}s`; // Faster fall
+        animationArea.appendChild(star);
+    }
+
     // --- Confetti Generator Function ---
     function launchConfetti() {
         const NUM_CONFETTI = 50;
@@ -39,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- SINGLE CLICK LOGIC ---
     button.addEventListener('click', () => {
-        // Prevent accidental double-clicks
         button.disabled = true;
 
         // 1. Play Music
