@@ -2,50 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const song = document.getElementById('birthday-song');
     const button = document.getElementById('reveal-button');
     const messageArea = document.getElementById('message-area');
-    const animationContainer = document.getElementById('animation-container');
+    const sparkleOverlay = document.getElementById('sparkle-overlay'); // NEW: Sparkle container
     const photoFrame = document.querySelector('.photo-frame');
     const mainMessage = document.getElementById('the-main-message');
     
-    // --- Balloon Generator Function (For continuous background) ---
-    function launchBalloons() {
-        const NUM_BALLOONS = 12; 
-        for (let i = 0; i < NUM_BALLOONS; i++) {
-            const balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            
-            // Random styling for scattered look
-            balloon.style.left = `${Math.random() * 95}%`; 
-            balloon.style.animationDelay = `${Math.random() * 10}s`; // Stagger start time
-            balloon.style.animationDuration = `${18 + Math.random() * 10}s`;
-            
-            animationContainer.appendChild(balloon);
-        }
-    }
-
-    // --- Sparkle Generator Function (For transient burst) ---
+    // --- Sparkle Generator Function ---
     function launchSparkles() {
-        const NUM_SPARKLES = 150; 
+        const NUM_SPARKLES = 150; // A good number for a full-page burst
         for (let i = 0; i < NUM_SPARKLES; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
             
-            const size = Math.random() * 5 + 3; 
+            // Random size for variety
+            const size = Math.random() * 5 + 3; // 3px to 8px
             sparkle.style.width = `${size}px`;
             sparkle.style.height = `${size}px`;
 
+            // Random position across the entire screen
             sparkle.style.top = `${Math.random() * 100}%`;
             sparkle.style.left = `${Math.random() * 100}%`;
 
+            // Stagger animation delay slightly
             sparkle.style.animationDelay = `${Math.random() * 0.8}s`; 
             
-            animationContainer.appendChild(sparkle);
+            sparkleOverlay.appendChild(sparkle);
         }
+        // Clean up sparkles after they fade out
         setTimeout(() => {
-            document.querySelectorAll('.sparkle').forEach(p => p.remove());
-        }, 2000); 
+            sparkleOverlay.innerHTML = ''; // Clear all sparkles
+        }, 2000); // Give them time to animate
     }
 
-    // --- Confetti Generator Function (For transient burst) ---
+    // --- Confetti Generator Function (Unchanged) ---
     function launchConfetti() {
         const NUM_CONFETTI = 50;
         for (let i = 0; i < NUM_CONFETTI; i++) {
@@ -56,40 +44,39 @@ document.addEventListener('DOMContentLoaded', () => {
             piece.style.left = `${40 + Math.random() * 20}%`;
             piece.style.setProperty('--x-offset', `${(Math.random() * 200 - 100)}px`); 
             
-            animationContainer.appendChild(piece);
+            sparkleOverlay.appendChild(piece); // Use sparkleOverlay as parent for confetti too
         }
         setTimeout(() => {
+            // Only remove confetti pieces, not all sparkles, if you want different timing
             document.querySelectorAll('.confetti-piece').forEach(p => p.remove());
         }, 3000);
     }
     
-    // --- SINGLE CLICK LOGIC (Executes all animations) ---
+    // --- SINGLE CLICK LOGIC ---
     button.addEventListener('click', () => {
         button.disabled = true;
 
         // 1. Play Music
         song.play().catch(error => console.error("Audio playback blocked:", error));
 
-        // 2. Photo Entry Effect
+        // 2. Photo Entry Effect (Spin and Scale)
         photoFrame.style.transition = 'transform 1s ease-out';
         photoFrame.style.transform = 'scale(1.1) rotate(360deg)';
         setTimeout(() => {
             photoFrame.style.transform = 'scale(1) rotate(0deg)'; 
         }, 1000);
 
-        // 3. LAUNCH ALL ANIMATIONS
-        // The burst effects first (Sparkles and Confetti)
-        launchSparkles();
-        launchConfetti();
-        
-        // The continuous background effect next
-        launchBalloons(); 
-
-        // 4. Reveal Message
+        // 3. Reveal Message
         messageArea.classList.add('revealed');
         mainMessage.style.display = 'block';
         
-        // 5. Hide the button
+        // 4. LAUNCH THE FULL-PAGE SPARKLES!
+        launchSparkles();
+        
+        // 5. Launch Confetti (can happen at the same time or slightly after sparkles)
+        launchConfetti();
+
+        // 6. Hide the button
         button.style.display = 'none'; 
     });
 });
