@@ -2,35 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const song = document.getElementById('birthday-song');
     const button = document.getElementById('reveal-button');
     const messageArea = document.getElementById('message-area');
-    const animationArea = document.getElementById('animation-area');
+    const sparkleOverlay = document.getElementById('sparkle-overlay'); // NEW: Sparkle container
     const photoFrame = document.querySelector('.photo-frame');
     const mainMessage = document.getElementById('the-main-message');
     
-    // --- Balloon and Star Generator ---
-    const NUM_BALLOONS = 12; // Fewer, bigger balloons
-    const NUM_STARS = 30; // Many small, falling stars
+    // --- Sparkle Generator Function ---
+    function launchSparkles() {
+        const NUM_SPARKLES = 150; // A good number for a full-page burst
+        for (let i = 0; i < NUM_SPARKLES; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            
+            // Random size for variety
+            const size = Math.random() * 5 + 3; // 3px to 8px
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
 
-    // Generate Balloons (float up)
-    for (let i = 0; i < NUM_BALLOONS; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        balloon.style.left = `${Math.random() * 95}%`; 
-        balloon.style.animationDelay = `${Math.random() * 8}s`;
-        balloon.style.animationDuration = `${18 + Math.random() * 10}s`;
-        animationArea.appendChild(balloon);
+            // Random position across the entire screen
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.left = `${Math.random() * 100}%`;
+
+            // Stagger animation delay slightly
+            sparkle.style.animationDelay = `${Math.random() * 0.8}s`; 
+            
+            sparkleOverlay.appendChild(sparkle);
+        }
+        // Clean up sparkles after they fade out
+        setTimeout(() => {
+            sparkleOverlay.innerHTML = ''; // Clear all sparkles
+        }, 2000); // Give them time to animate
     }
 
-    // Generate Stars (fall down)
-    for (let i = 0; i < NUM_STARS; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = `${Math.random() * 95}%`; 
-        star.style.animationDelay = `${Math.random() * 5}s`;
-        star.style.animationDuration = `${6 + Math.random() * 4}s`; // Faster fall
-        animationArea.appendChild(star);
-    }
-
-    // --- Confetti Generator Function ---
+    // --- Confetti Generator Function (Unchanged) ---
     function launchConfetti() {
         const NUM_CONFETTI = 50;
         for (let i = 0; i < NUM_CONFETTI; i++) {
@@ -41,9 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
             piece.style.left = `${40 + Math.random() * 20}%`;
             piece.style.setProperty('--x-offset', `${(Math.random() * 200 - 100)}px`); 
             
-            animationArea.appendChild(piece);
+            sparkleOverlay.appendChild(piece); // Use sparkleOverlay as parent for confetti too
         }
         setTimeout(() => {
+            // Only remove confetti pieces, not all sparkles, if you want different timing
             document.querySelectorAll('.confetti-piece').forEach(p => p.remove());
         }, 3000);
     }
@@ -62,12 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
             photoFrame.style.transform = 'scale(1) rotate(0deg)'; 
         }, 1000);
 
-        // 3. Reveal Message and Launch Confetti
+        // 3. Reveal Message
         messageArea.classList.add('revealed');
         mainMessage.style.display = 'block';
-        launchConfetti();
         
-        // 4. Hide the button
+        // 4. LAUNCH THE FULL-PAGE SPARKLES!
+        launchSparkles();
+        
+        // 5. Launch Confetti (can happen at the same time or slightly after sparkles)
+        launchConfetti();
+
+        // 6. Hide the button
         button.style.display = 'none'; 
     });
 });
